@@ -1,16 +1,15 @@
+
 import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
-abstract class AuthState {}
+abstract class TabGameState {}
 
-class InitialAuthenticationState extends AuthState {}
+class TabGameStateInitial extends TabGameState {}
 
-class AuthenticationSuccess extends AuthState {}
-
-class AuthenticationFail extends AuthState {
+class TabGameStateFailure extends TabGameState {
   final String error;
 
-  AuthenticationFail({required this.error});
+  TabGameStateFailure({required this.error});
 
   String getErrorMsg(){
     if (!Utils.checkDataEmpty(error)){
@@ -18,4 +17,5 @@ class AuthenticationFail extends AuthState {
     }
     return AppLanguage().translator(LanguageKeys.ERROR_MY_CLIENT);
   }
+
 }

@@ -7,3 +7,5 @@ export 'login_state.dart';
 export 'splash_screen_state.dart';
 export 'theme_state.dart';
 export 'tab_setting_state.dart';
+export 'tab_game_state.dart';
+export 'tab_lobby_state.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
+import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -23,8 +24,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if (event is OnAuthProcess) {
         ///authentication process flow
-        yield AuthenticationSuccess();
+        Application.chatSocket.connectAndLogin('auth=nett');
 
+        Application.chatSocket.login(
+            zone: Application.zoneGameName,
+            uname: GUIDGen.generate(),
+            upass: GUIDGen.generate(),
+            param: {}
+        );
+
+        yield AuthenticationSuccess();
       }
 
       if(event is OnAuthUpdate){
@@ -32,15 +41,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (event is OnClear) {
-        yield AuthenticationFail();
+        yield AuthenticationFail(
+          error: "OnClear"
+        );
 
       }
-    } catch (ex, stacktrace) {
-      yield AuthenticationFail();
+    }
+    catch (ex, st) {
+      print('connectAndLogin $ex');
+      print('connectAndLogin $st');
+
+      yield AuthenticationFail(
+        error: ex.toString()
+      );
 
       UtilLogger.recordError(
           ex,
-          stack: stacktrace,
+          stack: st,
           fatal: true
       );
     }

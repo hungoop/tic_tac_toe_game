@@ -1,14 +1,20 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:game_client_flutter/repository/repository.dart';
 
 class Application {
   static const bool IS_ActiveTest                     = false;
   static const bool IS_LOCAL                          = true;
+  static final WebSocketTTTGame chatSocket             = WebSocketTTTGame();
+
+  static String zoneGameName                      = 'ttt_game';
+
+
 
   static String timeZoneName                      = DateTime.now().timeZoneName;
   static int delayTimeConnectFailCall             = 30;
   static int delayTimeCloseScreenCall             = 2;
-  static int delayTimePingReconnectWS             = 20;
+  static int delayTimePingReconnectWS             = 15;
   static const int NUM_OF_PAGE                    = 20;
 
   static const int MAX_MEMBER_CALL                = 4;

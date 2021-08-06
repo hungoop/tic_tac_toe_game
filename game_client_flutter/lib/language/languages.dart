@@ -16,6 +16,7 @@ class LanguageKeys {
   static const String WS_REQ_FAILURE            = 'WS_REQ_FAILURE';
   static const String WS_INIT_FAILURE           = 'WS_INIT_FAILURE';
 
+  static const String WAITING_RECONNECT_TO_SERVER  = 'WAITING_RECONNECT_TO_SERVER';
   static const String DEVICE_OFF_NETWORK_ERROR  = 'DEVICE_OFF_NETWORK_ERROR';
   static const String ERROR_MY_CLIENT           = 'ERROR_MY_CLIENT';
   static const String CONNECT_SERVER_FAILRURE   = 'CONNECT_SERVER_FAILRURE';

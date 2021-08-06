@@ -1,5 +1,4 @@
 
-
 import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
@@ -11,9 +10,6 @@ class TabSettingStateFailure extends TabSettingState {
   final String error;
 
   TabSettingStateFailure({required this.error});
-
-  @override
-  List<Object> get props => [error];
 
   String getErrorMsg(){
     if (!Utils.checkDataEmpty(error)){

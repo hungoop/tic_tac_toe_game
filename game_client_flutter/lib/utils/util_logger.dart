@@ -46,13 +46,21 @@ class UtilLogger {
         bool fatal = false
       }
   ) async{
-    await FirebaseCrashlytics.instance.recordError(
-        exception,
-        stack,
-        reason: reason,
-        information: information,
-        printDetails: printDetails,
-        fatal: fatal);
+    if (Application.IS_LOCAL) {
+      //if(Utils.isWeb()){
+        //print('$exception: $stack');
+      //} else {
+        await FirebaseCrashlytics.instance.recordError(
+            exception,
+            stack,
+            reason: reason,
+            information: information,
+            printDetails: printDetails,
+            fatal: fatal);
+      //}
+    }
+
+
   }
 
   UtilLogger._internal();

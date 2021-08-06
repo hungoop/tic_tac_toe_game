@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/repository/nett_client/nett_socket_client.dart';
 import 'package:game_client_flutter/repository/repository.dart';
+import 'package:game_client_flutter/utils/utils.dart';
 
 class WebSocketApi {
   static final WebSocketApi _webSocketApi = WebSocketApi._internal();
@@ -26,7 +27,7 @@ class WebSocketApi {
   }
 
   initConnect(String authData) {
-    addExtListener(_onExtMessageReceived);
+    addSysListener(_onExtSystemReceived);
 
     _authData = authData;
     String urlAndData = '$_serverAddress?$_authData';
@@ -44,15 +45,68 @@ class WebSocketApi {
   }
 
   sendData(String cmd, dynamic data) {
-    client?.sendExtension(cmd, data);
+    client.sendExtension(cmd, data);
+  }
+
+  void login({
+    required String zone,
+    required String uname,
+    required String upass,
+    required Object param
+  }){
+    client.login(zone: zone, uname: uname, upass: upass, param: param);
+  }
+
+  void logout() {
+    client.logout();
+  }
+
+  void joinRoom({required int roomId}) {
+    client.joinRoom(roomId: roomId);
+  }
+
+  void createRoom({
+    required String roomName,
+    int maxPlayer = 100,
+    int maxSpectator = 100
+  }) {
+    client.createRoom(
+        roomName: roomName,
+        maxPlayer: maxPlayer,
+        maxSpectator: maxSpectator
+    );
+  }
+
+  void createOrJoinRoom(
+      String roomName,
+      {
+        int typeId = -1,
+        String? data,
+        int maxPlayer = 100,
+        int maxSpectator = 100
+  }) {
+    client.createOrJoinRoom(
+      roomName,
+      data: data,
+      typeId: typeId,
+      maxPlayer: maxPlayer,
+      maxSpectator: maxSpectator
+    );
+  }
+
+  void leaveRoom({int roomId = -1, String roomName = ""}) {
+    client.leaveRoom(
+      roomId: roomId,
+      roomName: roomName
+    );
   }
 
   destroy() {
-    client?.closeConnect();
+    client.closeConnect();
     timerStick?.cancel();
     timerStick = null;
 
-    removeExtListener(_onExtMessageReceived);
+    removeSysListener(_onExtSystemReceived);
   }
 
   ////////////////////////////////////////////////////////
@@ -71,12 +125,12 @@ class WebSocketApi {
 
   //TODO : xu ly bat co reconnect lai cho server Nett
   // xu lý ở onSystemMessageReceived
-  _onExtMessageReceived(WsExtensionMessage event) async {
+  _onExtSystemReceived(WsSystemMessage event) async {
     switch(event.cmd) {
-      //case WsExtensionMessage.:{
-      //  _isNextReconnect = false;
-      //}
-      //break;
+      case WsSystemMessage.ON_USER_PING:{
+        _isNextReconnect = false;
+      }
+      break;
       default:{}
     }
 
@@ -92,7 +146,7 @@ class WebSocketApi {
 
   sendPing(){
     _isNextReconnect = true;
-    client?.pingServer();
+    client.pingServer(key: GUIDGen.generate());
   }
 
   pingServer() {

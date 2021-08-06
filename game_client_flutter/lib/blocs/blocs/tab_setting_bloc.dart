@@ -40,7 +40,8 @@ class TabSettingBloc extends Bloc<TabSettingEvent, TabSettingState> {
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
         yield TabSettingStateFailure(error: ex.toString());
-      } else {
+      }
+      else {
         yield TabSettingStateFailure(
             error: AppLanguage().translator(
                 LanguageKeys.CONNECT_SERVER_FAILRURE

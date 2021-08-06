@@ -35,6 +35,7 @@ class _LvChatApp extends State<TTTApp2> {
     initConnectivity();
 
     AppBloc.applicationBloc.add(OnSetupApplication());
+    AppBloc.applicationBloc.add(OnInitWSListening());
 
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 

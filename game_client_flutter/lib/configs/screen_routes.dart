@@ -36,19 +36,6 @@ class ScreenRoutes {
   static const String MY_QR_CODE        = "/my_qr_code";
   static const String ADD_FRIEND_OPTION = "/add_fr_option";
 
-  static const String BLACKLIST_ROOMS   = "/blacklist_rooms";
-  static const String BLACKLIST_FRIENDS = "/blacklist_friends";
-  static const String HIDELIST_FRIENDS  = "/hidelist_friends";
-
-  static const String SEARCH_PAGE       = "/search_page";
-  static const String SEARCH_CHATS      = "/search_chats";
-  static const String MEDIA_MANAGER     = "/media_manager";
-  static const String MEDIA_PREVIEW     = "/media_preview";
-  static const String PLAY_VIDEO        = "/play_video";
-  static const String CHAT_MENTION      = "/chat_mention";
-
-  static const String CAPTURE_SCREEN      = "/capture_screen";
-
 
 
 }

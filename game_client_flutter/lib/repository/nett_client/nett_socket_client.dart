@@ -45,7 +45,6 @@ class NettSocketClient {
   }
   _onReceptionOfSysMessageFromServer(WsSystemMessage message){
     _sysListeners.forEach((Function sysCallback){
-      print('sysCallback:$sysCallback mes:${message.toString()}');
       sysCallback(message);
     });
   }
@@ -70,8 +69,9 @@ class NettSocketClient {
     }
 
     if(!Utils.checkDataEmpty(serverAddress)){
+      print('$serverAddress');
       socket = WebSocketChannel.connect(
-          Uri.parse(serverAddress!)
+          Uri.parse(serverAddress)
       );
     }
     else {
@@ -133,7 +133,7 @@ class NettSocketClient {
   void createOrJoinRoom(
       String roomName,
       {int typeId = -1,
-        required String data,
+        String? data,
         int maxPlayer = 100,
         int maxSpectator = 100
       }
@@ -164,7 +164,7 @@ class NettSocketClient {
     this._sendSys(WsSystemMessage.LEAVE_ROOM, mes);
   }
 
-  void pingServer({int key = 0}){
+  void pingServer({dynamic key = 0}){
     var mes = {};
     mes["p"] = key;
     this._sendSys(WsSystemMessage.ON_USER_PING, mes);

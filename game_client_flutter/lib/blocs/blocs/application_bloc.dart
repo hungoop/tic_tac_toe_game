@@ -4,6 +4,7 @@ import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/exception/exception.dart';
 import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/models/models.dart';
+import 'package:game_client_flutter/repository/repository.dart';
 import 'package:game_client_flutter/storage/storage.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
@@ -21,7 +22,6 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         ///Get old Theme & Font & Language
         final oldTheme = SharedData().getString(Preferences.theme);
         final oldFont = SharedData().getString(Preferences.font);
-        //final oldLanguage = UtilPreferences.getString(Preferences.language);
         final oldDarkOption = SharedData().getString(Preferences.darkOption);
 
         DarkOption darkOption = DarkOption.dynamic;
@@ -65,11 +65,16 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
         yield ApplicationCompleted();
 
-        //Add Test
         AppBloc.authBloc.add(OnAuthCheck());
-
       }
-    } catch (ex, stacktrace) {
+
+      if (event is OnInitWSListening) {
+        Application.chatSocket.initWebSocketApi('ws://192.168.1.8:8722/ttt_game');
+        initWSListening();
+      }
+
+    }
+    catch (ex, stacktrace) {
       UtilLogger.recordError(
           ex,
           stack: stacktrace,
@@ -80,7 +85,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         AppBloc.splashBloc.add(
             SplashScreenEventShowMessage(message: '$ex')
         );
-      } else {
+      }
+      else {
         AppBloc.splashBloc.add(SplashScreenEventShowMessage(
             message: AppLanguage().translator(
                 LanguageKeys.CONNECT_SERVER_FAILRURE
@@ -90,6 +96,63 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
     }
 
+  }
+
+  @override
+  Future<void> close() {
+    destroyWSListening();
+    return super.close();
+  }
+
+  void initWSListening(){
+    Application.chatSocket.addExtListener(_onExtMessageReceived);
+    Application.chatSocket.addSysListener(_onSysMessageReceived);
+  }
+
+  void destroyWSListening(){
+    Application.chatSocket.removeExtListener(_onExtMessageReceived);
+    Application.chatSocket.removeSysListener(_onSysMessageReceived);
+  }
+
+  _onExtMessageReceived(WsExtensionMessage event) async {
+    switch(event.cmd) {
+      case CMD.GET_TIME:{
+
+      }
+      break;
+      default:{
+        UtilLogger.log(
+            'TTT EXT ${event.cmd}', '${event.data}'
+        );
+      }
+    }
+  }
+
+  _onSysMessageReceived(WsSystemMessage event) {
+    switch(event.cmd) {
+      case WsSystemMessage.ON_CLIENT_DONE:{
+        UtilLogger.log('ON_CLIENT_DONE ', '${event.data}');
+        AppBloc.connectivityBloc.add(ConnectivityEventWsError(
+            errorCode: LanguageKeys.WAITING_RECONNECT_TO_SERVER
+        ));
+      }
+      break;
+      case WsSystemMessage.ON_CLIENT_ERROR:{
+        UtilLogger.log('ON_CLIENT_ERROR ', '${event.data}');
+        AppBloc.connectivityBloc.add(ConnectivityEventWsError(
+            errorCode: LanguageKeys.CONNECT_SERVER_FAILRURE
+        ));
+      }
+      break;
+      case WsSystemMessage.ON_USER_PING:{
+        UtilLogger.log('ON_USER_PING ', '${event.data}');
+        AppBloc.connectivityBloc.add(ConnectivityEventWsPingSuccess());
+      }
+      break;
+      default:{
+        UtilLogger.log('TTT SYSTEM ${event.cmd}', '${event.data}');
+      }
+    }
   }
 
 }

@@ -13,6 +13,8 @@ class AppBloc {
   static final splashBloc         = SplashScreenBloc();
   static final loginBloc          = LoginBloc();
   static final settingBloc        = TabSettingBloc();
+  static final gameBloc           = TabGameBloc();
+  static final lobbyBloc          = TabLobbyBloc();
 
   static final List<BlocProvider> providers = [
     BlocProvider<ApplicationBloc>(
@@ -42,6 +44,12 @@ class AppBloc {
     BlocProvider<TabSettingBloc>(
       create: (context) => settingBloc,
     ),
+    BlocProvider<TabGameBloc>(
+      create: (context) => gameBloc,
+    ),
+    BlocProvider<TabLobbyBloc>(
+      create: (context) => lobbyBloc,
+    ),
   ];
 
   static void dispose(){
@@ -54,6 +62,8 @@ class AppBloc {
     splashBloc.close();
     loginBloc.close();
     settingBloc.close();
+    gameBloc.close();
+    lobbyBloc.close();
   }
 
   ///Singleton factory
