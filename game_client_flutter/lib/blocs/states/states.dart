@@ -9,3 +9,4 @@ export 'theme_state.dart';
 export 'tab_setting_state.dart';
 export 'tab_game_state.dart';
 export 'tab_lobby_state.dart';
+export 'play_game_state.dart';

@@ -71,6 +71,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       if (event is OnInitWSListening) {
         Application.chatSocket.initWebSocketApi('ws://192.168.1.8:8722/ttt_game');
         initWSListening();
+
+        AppBloc.lobbyBloc.add(TabLobbyEventFetched());
+        AppBloc.gameBloc.add(TabGameEventFetched());
       }
 
     }
@@ -145,7 +148,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       }
       break;
       case WsSystemMessage.ON_USER_PING:{
-        UtilLogger.log('ON_USER_PING ', '${event.data}');
+        //UtilLogger.log('ON_USER_PING ', '${event.data}');
         AppBloc.connectivityBloc.add(ConnectivityEventWsPingSuccess());
       }
       break;

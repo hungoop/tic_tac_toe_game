@@ -12,7 +12,7 @@ import ttt.nett.server.log.LogExt;
 
 @Instantiation(Instantiation.InstantiationMode.SINGLE_INSTANCE)
 public class UserLogoutHandler extends BaseServerEventHandler {
-	private static Logger log = LogExt.getLogApp(RoomAddedHandler.class);
+	private static Logger log = LogExt.getLogApp(UserLogoutHandler.class);
 
 	@Override
 	public void handleServerEvent(GEvent event) throws GException {

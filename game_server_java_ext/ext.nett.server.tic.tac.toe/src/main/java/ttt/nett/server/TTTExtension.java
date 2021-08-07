@@ -1,10 +1,10 @@
 package ttt.nett.server;
 
 import org.slf4j.Logger;
-
 import nett.server.st.game.event.GEventType;
 import nett.server.st.game.extension.GExtensionHTTP;
 import ttt.nett.server.command.CMD;
+import ttt.nett.server.config.CfgExtenstion;
 import ttt.nett.server.handler.system.*;
 import ttt.nett.server.log.LogExt;
 
@@ -15,6 +15,8 @@ public class TTTExtension extends GExtensionHTTP {
 	public void init() {
 		LogExt.appId = this.getZoneName();
 		log = LogExt.getLogApp(TTTExtension.class);
+		CfgExtenstion.getInstance().loadConfigFile(this.getZoneName());
+		
 		
 		this.addEventHandler(GEventType.SERVER_READY, ServerReadyHandler.class);
 		this.addEventHandler(GEventType.USER_JOIN_ZONE, UserJoinZoneHandler.class);

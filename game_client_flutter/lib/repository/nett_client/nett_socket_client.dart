@@ -118,6 +118,7 @@ class NettSocketClient {
   void joinRoom({required int roomId}) {
     var mes = {};
     mes["i"] = roomId;
+    mes["f"] = true;
 
     this._sendSys(WsSystemMessage.JOINT_ROOM, mes);
   }

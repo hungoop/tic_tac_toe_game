@@ -6,6 +6,7 @@ import nett.server.st.game.extension.BaseHTTPClientRequestHandler;
 import ttt.nett.server.handler.ext.ws.*;
 
 public enum CMD {
+	ROOM_LIST("roomlist", null, null),
 	STOP_GAME("stopgame", null, StopGameWSRequest.class),
 	START_GAME("startgame", null, StartGameWSRequest.class),
 	PLAY_GAME("playgame", null, PlayGameWSRequest.class),

@@ -1,5 +1,6 @@
 
 import 'package:game_client_flutter/language/languages.dart';
+import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
 abstract class TabLobbyState {}
@@ -17,5 +18,12 @@ class TabLobbyStateFailure extends TabLobbyState {
     }
     return AppLanguage().translator(LanguageKeys.ERROR_MY_CLIENT);
   }
+
+}
+
+class TabLobbyStateSuccess extends TabLobbyState {
+  List<RoomView> views;
+
+  TabLobbyStateSuccess(this.views);
 
 }

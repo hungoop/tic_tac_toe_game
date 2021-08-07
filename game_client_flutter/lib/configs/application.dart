@@ -14,7 +14,7 @@ class Application {
   static String timeZoneName                      = DateTime.now().timeZoneName;
   static int delayTimeConnectFailCall             = 30;
   static int delayTimeCloseScreenCall             = 2;
-  static int delayTimePingReconnectWS             = 15;
+  static int delayTimePingReconnectWS             = 60;
   static const int NUM_OF_PAGE                    = 20;
 
   static const int MAX_MEMBER_CALL                = 4;

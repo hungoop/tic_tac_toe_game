@@ -14,7 +14,7 @@ import ttt.nett.server.log.LogExt;
 
 @Instantiation(Instantiation.InstantiationMode.SINGLE_INSTANCE)
 public class UserLoginHandler extends BaseServerEventHandler {
-	private static Logger log = LogExt.getLogApp(RoomAddedHandler.class);
+	private static Logger log = LogExt.getLogApp(UserLoginHandler.class);
 
 	@Override
 	public void handleServerEvent(GEvent event) throws GException {

@@ -12,7 +12,7 @@ import ttt.nett.server.log.LogExt;
 
 @Instantiation(Instantiation.InstantiationMode.SINGLE_INSTANCE)
 public class UserJoinRoomHandler extends BaseServerEventHandler {
-	private static Logger log = LogExt.getLogApp(RoomAddedHandler.class);
+	private static Logger log = LogExt.getLogApp(UserJoinRoomHandler.class);
 
 	@Override
 	public void handleServerEvent(GEvent event) throws GException {
@@ -21,6 +21,8 @@ public class UserJoinRoomHandler extends BaseServerEventHandler {
 		User user = (User) event.getParameter(GEventParam.USER);
 		
 		log.debug(zone.getName() + " UserJoinRoomHandler => room:" + room.getName() + ", user:" + user.getName());
+		
+		
 
 	}
 

@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
 import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/language/languages.dart';
+import 'package:game_client_flutter/models/models.dart';
+import 'package:game_client_flutter/screens/play_ttt_game_page.dart';
 import 'package:game_client_flutter/screens/screens.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
@@ -119,6 +121,25 @@ class RouteGenerator {
             }
         );
       }
+      case ScreenRoutes.PLAY_GAME: {
+        var res = settings.arguments;
+        if(res is RoomRes){
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<PlayGameBloc>(
+                create: (context) {
+                  return PlayGameBloc(res)
+                    ..add(PlayGameEventFetched());
+                },
+                child: PlayTTTGamePage(),
+              );
+            });
+        }
+
+        return _errorRoute(settings);
+      }
+
       default:
         return _errorRoute(settings);
     }

@@ -10,3 +10,4 @@ export 'them_bloc.dart';
 export 'tab_setting_bloc.dart';
 export 'tab_game_bloc.dart';
 export 'tab_lobby_bloc.dart';
+export 'play_game_bloc.dart';
