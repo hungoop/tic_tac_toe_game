@@ -10,17 +10,29 @@ class LoginState extends Equatable {
   List<Object> get props => [];
 }
 
+class LoginStateInitial extends LoginState {}
+
 class LoginStateSuccess extends LoginState {
   final bool isValidIdentification;
   final bool isValidPassword;
   final int force = Utils.randomNext(0, 1000);
 
-  LoginStateSuccess({this.isValidIdentification = false, this.isValidPassword = false});
+  LoginStateSuccess({
+    this.isValidIdentification = false,
+    this.isValidPassword = false
+  });
 
   @override
-  List<Object> get props => [isValidIdentification, isValidPassword, force];
+  List<Object> get props => [
+    isValidIdentification,
+    isValidPassword,
+    force
+  ];
 
-  LoginStateSuccess cloneWith({bool? isValidIdentification, bool? isValidPassword}){
+  LoginStateSuccess cloneWith({
+    bool? isValidIdentification,
+    bool? isValidPassword
+  }){
     return LoginStateSuccess(
       isValidIdentification: isValidIdentification ?? this.isValidIdentification,
       isValidPassword: isValidPassword ?? this.isValidPassword

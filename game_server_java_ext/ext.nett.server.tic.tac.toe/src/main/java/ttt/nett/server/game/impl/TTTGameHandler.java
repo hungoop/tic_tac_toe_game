@@ -13,6 +13,7 @@ import ttt.nett.server.game.logic.TTTBoard;
 import ttt.nett.server.game.logic.TTTLogic;
 import ttt.nett.server.game.logic.TTTRule;
 import ttt.nett.server.log.LogExt;
+import ttt.nett.server.model.entity.Position;
 import ttt.nett.server.model.entity.TTTPlayer;
 
 public class TTTGameHandler implements IGameHandler {
@@ -46,37 +47,56 @@ public class TTTGameHandler implements IGameHandler {
 
 	@Override
 	public void leaveRoom(User user) {
-		// TODO Auto-generated method stub
-		
+		TTTPlayer player = _logic.leaveRoom(user);
+		if(player != null) {
+			try {
+				_roomGame.switchPlayerToSpectator(player.getUser());
+			} catch (GRoomException e) {
+				log.error(e.getMessage(), e);
+			}
+		}
 	}
 
 	@Override
-	public void disconnect(User user, String playBoardId) {
-		// TODO Auto-generated method stub
-		
+	public void disconnect(User user) {
+		TTTPlayer player = _logic.disconnect(user);
 	}
 
 	@Override
 	public JSONObject getData() {
-		return _board.toJson();
+		return _logic.getData();
 	}
 
 	@Override
-	public void start() {
-		// TODO Auto-generated method stub
+	public TTTPlayer start(User user) {
+		TTTPlayer player = _board.getPlayer(user.getId());
 		
+		if(player != null) {
+			
+		}
+		
+		return player;
 	}
 
 	@Override
-	public void stop() {
-		// TODO Auto-generated method stub
+	public TTTPlayer stop(User user) {
+		TTTPlayer player = _board.getPlayer(user.getId());
 		
+		if(player != null) {
+			
+		}
+		
+		return player;
 	}
 
 	@Override
-	public void play() {
-		// TODO Auto-generated method stub
+	public Position play(User user, int x, int y) {
+		TTTPlayer player = _board.getPlayer(user.getId());
+		if(player != null) {
+			return _logic.play(x, y, player.getTeam());
+		}
 		
+		return null;
 	}
 
 	@Override
@@ -90,6 +110,7 @@ public class TTTGameHandler implements IGameHandler {
 		
 		return jArr;
 	}
-
+	
+	
 
 }

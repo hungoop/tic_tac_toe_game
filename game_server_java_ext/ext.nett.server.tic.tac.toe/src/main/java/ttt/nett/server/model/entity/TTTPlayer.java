@@ -3,12 +3,25 @@ package ttt.nett.server.model.entity;
 import org.json.JSONObject;
 
 import nett.server.st.game.entity.User;
+import ttt.nett.server.command.TEAM_TYPE;
 
 public class TTTPlayer {
 	private User _user;
 	private boolean _myTurn;
 	private String _nickName;
 	
+	private TEAM_TYPE _team;
+	
+	
+	
+	public TEAM_TYPE getTeam() {
+		return _team;
+	}
+
+	public void setTeam(TEAM_TYPE team) {
+		this._team = team;
+	}
+
 	public boolean isMyTurn() {
 		return _myTurn;
 	}
@@ -32,6 +45,7 @@ public class TTTPlayer {
 	public TTTPlayer(User user){
 		_user = user;
 		_myTurn = false;
+		_team = TEAM_TYPE.NONE;
 	}
 	
 	public String playerID() {

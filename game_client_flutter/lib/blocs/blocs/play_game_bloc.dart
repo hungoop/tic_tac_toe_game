@@ -10,6 +10,7 @@ import 'package:game_client_flutter/utils/util_logger.dart';
 class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
   RoomRes res;
   late UserListModel userListModel;
+  late GameTTTModel gameTTTModel;
 
   PlayGameBloc(this.res) : super(PlayGameStateInitial());
 
@@ -23,11 +24,13 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
           initWSListening();
           joinRoom();
           userListModel = UserListModel.fromRes([]);
+          gameTTTModel = GameTTTModel.fromRes([]);
         }
 
         yield PlayGameStateSuccess(
             RoomView(res),
-            userListModel.dataViews
+            userListModel.dataViews,
+            gameTTTModel.dataViews
         );
       }
       else if(event is PlayGameEventUserList){
@@ -38,6 +41,22 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
               userViews: userListModel.dataViews
           );
         }
+      }
+      else if(event is PlayGameEventRoadMap){
+        if(currState is PlayGameStateSuccess){
+          gameTTTModel = GameTTTModel.fromRes(event.lst);
+
+          yield currState.cloneWith(
+              roadMapViews: gameTTTModel.dataViews
+          );
+        }
+      }
+      else if(event is PlayGameEventPosChoose){
+        if(currState is PlayGameStateSuccess){
+          PositionView posView = event.pos;
+          sendPlayGame(posView.res);
+        }
+
       }
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
@@ -86,6 +105,15 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
     );
   }
 
+  void sendPlayGame(PositionRes res){
+    var mes = {};
+    mes["x"] = res.x;
+    mes["y"] = res.y;
+    Application.chatSocket.sendExtData(
+        CMD.PLAY_GAME, mes
+    );
+  }
+
   void initWSListening(){
     Application.chatSocket.addExtListener(_onExtMessageReceived);
     Application.chatSocket.addSysListener(_onSysMessageReceived);
@@ -111,9 +139,10 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
         DataPackage data = DataPackage.fromJson(event.data);
 
         if(data.isOK(iSuccess: 0)){
-          UtilLogger.log('GAME_DATA', '$data');
-          //List<UserRes> lst = UserListModel.parseRes(data);
-          //this.add(PlayGameEventUserList(lst));
+          //UtilLogger.log('GAME_DATA', '$data');
+
+          List<PositionRes> lst = GameTTTModel.parseRes(data);
+          this.add(PlayGameEventRoadMap(lst));
         }
       }
       break;

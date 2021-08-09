@@ -28,13 +28,13 @@ public class UserDisconnectHandler extends BaseServerEventHandler {
 		log.debug(zone.getName() + " UserDisconnectHandler => room:" + joinedRooms + ", user:" + user.getName());
 		
 		try {
-			long roomID = user.getLastJoinedRoom();
+			long roomID = joinedRooms.get(0);//user.getLastJoinedRoom();
 			
 			Room r = this.getParentExtension().getParentZone().getRoomById(roomID);
 			
 			RoomGameControler controler = TTTExtension.getGameControler(r);
 			if(controler != null ) {
-				controler.userGiveUp(user);
+				controler.disconnectGame(user);
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

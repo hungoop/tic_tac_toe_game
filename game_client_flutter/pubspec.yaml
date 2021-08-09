@@ -59,6 +59,7 @@ dependencies:
   responsive_framework: ^0.1.4
   country_code_picker: ^2.0.2
   ota_update: ^3.0.2
+  english_words: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -84,6 +84,16 @@ class LoginEventStarted extends LoginEvent {
   List<Object> get props => [isLogout];
 }
 
+class LoginEventSuccess extends LoginEvent {}
+
+class LoginEventFailure extends LoginEvent {
+  final String messError;
+
+  LoginEventFailure(this.messError);
+
+  @override
+  List<Object> get props => [messError];
+}
 
 enum LOGIN_TYPE {
   TOKEN,
@@ -134,7 +144,6 @@ extension LOGIN_TYPE_EXT on LOGIN_TYPE {
     return _lgTypeId(this);
   }
 }
-
 
 enum DEVICE_TYPE {
   UNKNOWN,//0

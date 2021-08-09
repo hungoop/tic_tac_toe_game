@@ -65,12 +65,14 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
         yield ApplicationCompleted();
 
-        AppBloc.authBloc.add(OnAuthCheck());
+
       }
 
       if (event is OnInitWSListening) {
         Application.chatSocket.initWebSocketApi('ws://192.168.1.8:8722/ttt_game');
         initWSListening();
+
+        AppBloc.authBloc.add(OnAuthCheck());
 
         AppBloc.lobbyBloc.add(TabLobbyEventFetched());
         AppBloc.gameBloc.add(TabUserEventFetched());

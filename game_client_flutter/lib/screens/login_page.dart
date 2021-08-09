@@ -1,5 +1,6 @@
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,6 +74,10 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       //////0.By Token 1.By UserName  2.By Telephone 3.By Email
       print('--------loginType: ${_getLoginType(_tabController.index)}----------');
     });
+
+    String userGen = generateWordPairs().take(10).first.first;
+    _emailEditingController.text = userGen.toUpperCase();
+    _passEditingController.text = userGen;
   }
 
   @override
@@ -87,7 +92,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
     if(_getLoginType(_tabController.index) == LOGIN_TYPE.EMAIL_OR_ID){
       identify = _emailEditingController.text;
-    } else if(_getLoginType(_tabController.index) == LOGIN_TYPE.TELEPHONE_PWD){
+    }
+    else if(_getLoginType(_tabController.index) == LOGIN_TYPE.TELEPHONE_PWD){
       identify = _telephoneEditingController.text;
     }
 
@@ -96,7 +102,10 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
         identify,
         _passEditingController.text,
         _getLoginType(_tabController.index),
-        countryCode: _countryCode ?? CountryCode(code: 'VN', dialCode: '84')
+        countryCode: _countryCode ?? CountryCode(
+            code: 'VN',
+            dialCode: '84'
+        )
     ));
   }
 
@@ -241,7 +250,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(AppLanguage().translator(
-                            LanguageKeys.MENU_TAB_TELEPHONE_TXT
+                            LanguageKeys.TELEPHONE_TEXT_DESCRIPTTION
                         )),
                       ),
                     ),
@@ -258,7 +267,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(AppLanguage().translator(
-                            LanguageKeys.MENU_TAB_EMAIL_OR_ID_TXT
+                            LanguageKeys.EMAIL_OR_ID_TEXT_DESCRIPTION
                         )),
                       ),
                     ),

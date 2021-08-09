@@ -2,11 +2,11 @@ package ttt.nett.server.game.impl;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
-
 import nett.server.st.game.entity.User;
 import ttt.nett.server.game.IGameApi;
 import ttt.nett.server.game.IGameHandler;
 import ttt.nett.server.log.LogExt;
+import ttt.nett.server.model.entity.Position;
 
 public class RoomGameControler {
 	private static Logger log = LogExt.getLogApp(RoomGameControler.class);
@@ -28,24 +28,44 @@ public class RoomGameControler {
 		_gameApi.sendGameData(user, gameData);
 	}
 	
+	public void leaveGame(User user) {
+		_gameHandler.leaveRoom(user);
+		
+		// send data to client
+		//JSONObject gameData = _gameHandler.getData();
+		//log.debug("gameData=>" + gameData.toString());
+		//_gameApi.sendGameData(user, gameData);
+	}
+	
+	public void disconnectGame(User user) {
+		_gameHandler.disconnect(user);
+		
+		// send data to client
+		//JSONObject gameData = _gameHandler.getData();
+		//log.debug("gameData=>" + gameData.toString());
+		//_gameApi.sendGameData(user, gameData);
+	}
+	
 	public void startGame(User user) {
 		// TODO xu ly start game
-		
+		_gameHandler.start(user);
 	}
 	
 	public void stopGame(User user) {
 		// TODO xu ly stop game
 		// xu ly win lose
-		
+		_gameHandler.stop(user);
 	}
 	
-	public void playGame(User user) {
-		// TODO xu ly play game
+	public void playGame(User user, int x, int y) {
+		Position pos = _gameHandler.play(user, x, y);
 		
-	}
-	
-	public void userGiveUp(User user) {
-		// TODO xu ly user bỏ cuộc
+		if(pos != null) {
+			// send data to client
+			JSONObject gameData = _gameHandler.getData();
+			log.debug("gameData=>" + gameData.toString());
+			_gameApi.sendGameData(gameData);
+		}
 		
 	}
 	

@@ -1,13 +1,17 @@
 
+import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
+import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/exception/base_chat_exception.dart';
 import 'package:game_client_flutter/language/languages.dart';
+import 'package:game_client_flutter/repository/repository.dart';
 import 'package:game_client_flutter/utils/util_logger.dart';
+import 'package:game_client_flutter/utils/utils.dart';
 import 'package:game_client_flutter/validators/validators.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(): super(LoginStateSuccess());
+  LoginBloc(): super(LoginStateInitial());
 
   _onLoginSuccess(){
     AppBloc.authBloc.add(OnAuthProcess());
@@ -18,16 +22,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     final loginState = state;
 
     try {
-      if(loginEvent is LoginEventStarted ){
+      if(loginState is LoginStateInitial){
+        initWSListening();
         yield LoginStateSuccess();
       }
-      else
-        if (loginEvent is LoginEventIdentificationChanged){
 
+      if(loginEvent is LoginEventStarted){
+        yield LoginStateSuccess();
+      }
+      else if (loginEvent is LoginEventIdentificationChanged){
         if(loginState is LoginStateSuccess){
           yield loginState.cloneWith(
-              isValidIdentification:
-              Validators.isValidIdentification(
+              isValidIdentification: Validators.isValidIdentification(
                   loginEvent.identification,
                   loginEvent.loginType
               )
@@ -37,15 +43,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       else if (loginEvent is LoginEventPasswordChanged) {
 
         if(loginState is LoginStateSuccess){
-          yield loginState.cloneWith(isValidPassword: Validators.isValidPassword(loginEvent.password),
-              isValidIdentification: Validators.isValidIdentification(loginEvent.identification, loginEvent.loginType));
+          yield loginState.cloneWith(
+              isValidPassword: Validators.isValidPassword(
+                  loginEvent.password
+              ),
+              isValidIdentification: Validators.isValidIdentification(
+                  loginEvent.identification,
+                  loginEvent.loginType
+              )
+          );
         }
       }
       else if (loginEvent is LoginEventWithEmailAndPasswordPress) {
         yield LoginStateLoading();
 
-        print('-------LoginStateInitial--------');
+        String userGen = generateWordPairs().take(5).first.first;
+
+        Application.chatSocket.login(
+            zone: Application.zoneGameName,
+            uname: '${userGen.toUpperCase()} ${loginEvent.identification}',
+            upass: GUIDGen.generate(),
+            param: {}
+        );
+      }
+      else if(loginEvent is LoginEventSuccess){
         yield LoginStateSuccess();
+        _onLoginSuccess();
+      }
+      else if(loginEvent is LoginEventFailure){
+        yield LoginStateFailure(error: loginEvent.messError);
       }
 
     } catch (ex, stacktrace) {
@@ -77,6 +103,40 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } else {
       return sourceType;
+    }
+  }
+
+  @override
+  Future<void> close() {
+    destroyWSListening();
+    return super.close();
+  }
+
+  void initWSListening(){
+    Application.chatSocket.addSysListener(_onSysMessageReceived);
+  }
+
+  void destroyWSListening(){
+    Application.chatSocket.removeSysListener(_onSysMessageReceived);
+  }
+
+  _onSysMessageReceived(WsSystemMessage event) {
+    switch(event.cmd) {
+      case WsSystemMessage.LOGIN: {
+        var data = event.data;
+        if(data == 'OK'){
+          this.add(LoginEventSuccess());
+        }
+        else {
+          this.add(LoginEventFailure(data));
+        }
+
+        UtilLogger.log('LOGIN', '$data');
+      }
+      break;
+      default:{
+        //UtilLogger.log('TTT SYSTEM ${event.cmd}', '${event.data}');
+      }
     }
   }
 

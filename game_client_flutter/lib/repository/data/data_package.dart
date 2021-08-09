@@ -23,6 +23,10 @@ class DataPackage {
     return data as List;
   }
 
+  List<dynamic> dataRoadMap() {
+    return dataToJson()["roadMap"] as List;
+  }
+
   DataReceiveException getException(){
     return DataReceiveException(
         code: bitOK,

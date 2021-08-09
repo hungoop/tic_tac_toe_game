@@ -7,7 +7,6 @@ class RoomView{
 
   RoomView(this.res, {this.choose = false});
 
-
   String title(){
     return res.rName;
   }

@@ -1,3 +1,4 @@
+import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
 import 'package:game_client_flutter/configs/configs.dart';
@@ -19,19 +20,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try{
       if (event is OnAuthCheck) {
         ///authentication check flow
-        this.add(OnAuthProcess());
+        //this.add(OnAuthProcess());
+        Application.chatSocket.connectAndLogin('auth=nett');
+        yield AuthenticationFail(error: 'First Login');
       }
 
       if (event is OnAuthProcess) {
         ///authentication process flow
-        Application.chatSocket.connectAndLogin('auth=nett');
+        /*
+        String idGen = GUIDGen.generate();
+        String userGen = generateWordPairs().take(12).first.first;
 
         Application.chatSocket.login(
             zone: Application.zoneGameName,
-            uname: GUIDGen.generate(),
+            uname: '${userGen.toUpperCase()} ${idGen.hashCode}',
             upass: GUIDGen.generate(),
             param: {}
-        );
+        );*/
 
         yield AuthenticationSuccess();
       }

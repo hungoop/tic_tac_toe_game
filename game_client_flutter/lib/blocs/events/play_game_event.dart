@@ -16,3 +16,21 @@ class PlayGameEventUserList extends PlayGameEvent {
   List<Object> get props => [lst];
 
 }
+
+class PlayGameEventRoadMap extends PlayGameEvent {
+  final List<PositionRes> lst;
+
+  PlayGameEventRoadMap(this.lst);
+
+  List<Object> get props => [lst];
+
+}
+
+class PlayGameEventPosChoose extends PlayGameEvent {
+  final PositionView pos;
+
+  PlayGameEventPosChoose(this.pos);
+
+  List<Object> get props => [pos];
+
+}

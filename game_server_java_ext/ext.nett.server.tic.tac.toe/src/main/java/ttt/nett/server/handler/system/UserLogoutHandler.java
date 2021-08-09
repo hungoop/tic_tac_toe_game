@@ -34,7 +34,7 @@ public class UserLogoutHandler extends BaseServerEventHandler {
 			RoomGameControler controler = TTTExtension.getGameControler(r);
 			
 			if(controler != null ) {
-				controler.userGiveUp(user);
+				controler.leaveGame(user);
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);

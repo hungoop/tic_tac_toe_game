@@ -292,7 +292,7 @@ class NettSocketClient {
             _onReceptionOfSysMessageFromServer(
                 WsSystemMessage(
                     cmd: WsSystemMessage.LOGIN,
-                    data: data
+                    data: 'OK'
                 )
             );
           }

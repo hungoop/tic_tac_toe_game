@@ -84,7 +84,7 @@ public class TTTExtension extends GExtensionHTTP {
 		roomGame.setProperty(
 				RoomGameControler.class, 
 				new RoomGameControler(
-						new GameAPI(this),
+						new GameAPI(this, roomGame),
 						new TTTGameHandler(roomGame)
 				)
 		);
