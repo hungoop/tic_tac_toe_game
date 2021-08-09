@@ -7,28 +7,28 @@ import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/repository/repository.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
-class TabLobbyBloc extends Bloc<TabLobbyEvent, TabLobbyState> {
-  late RoomListModel roomListModel;
+class TabUserBloc extends Bloc<TabUserEvent, TabUserState> {
+  late UserListModel userListModel;
 
-  TabLobbyBloc() : super(TabLobbyStateInitial());
+  TabUserBloc() : super(TabUserStateInitial());
 
   @override
-  Stream<TabLobbyState> mapEventToState(TabLobbyEvent event) async* {
+  Stream<TabUserState> mapEventToState(TabUserEvent event) async* {
     var currState = state;
 
     try {
-      if(event is TabLobbyEventFetched) {
-        if(currState is TabLobbyStateInitial){
+      if(event is TabUserEventFetched) {
+        if(currState is TabUserStateInitial){
           initWSListening();
-          roomListModel = RoomListModel.fromRes([]);
+          userListModel = UserListModel.fromRes([]);
         }
       }
-      else if(event is TabLobbyEventRoomList){
-        roomListModel = RoomListModel.fromRes(event.lst);
+      else if(event is TabUserEventUserList){
+        userListModel = UserListModel.fromRes(event.lst);
 
-        yield TabLobbyStateSuccess(roomListModel.dataViews);
+        yield TabUserStateSuccess(userListModel.dataViews);
       }
-      else if(event is TabLobbyEventJoinRoom){
+      else if(event is TabUserEventJoinRoom){
         if(currState is TabLobbyStateSuccess){
           RouteGenerator.pushNamed(
               ScreenRoutes.PLAY_GAME,
@@ -40,10 +40,9 @@ class TabLobbyBloc extends Bloc<TabLobbyEvent, TabLobbyState> {
 
     } catch (ex, stacktrace) {
       if(ex is BaseChatException){
-        yield TabLobbyStateFailure(error: ex.toString());
-      }
-      else {
-        yield TabLobbyStateFailure(
+        yield TabUserStateFailure(error: ex.toString());
+      } else {
+        yield TabUserStateFailure(
             error: AppLanguage().translator(
                 LanguageKeys.CONNECT_SERVER_FAILRURE
             )
@@ -76,13 +75,13 @@ class TabLobbyBloc extends Bloc<TabLobbyEvent, TabLobbyState> {
 
   _onExtMessageReceived(WsExtensionMessage event) async {
     switch(event.cmd) {
-      case CMD.ROOM_LIST:{
+      case CMD.USER_LIST:{
         DataPackage data = DataPackage.fromJson(event.data);
 
         if(data.isOK(iSuccess: 0)){
-          List<RoomRes> lst = RoomListModel.parseRes(data);
+          List<UserRes> lst = UserListModel.parseRes(data);
 
-          this.add(TabLobbyEventRoomList(lst));
+          this.add(TabUserEventUserList(lst));
         }
       }
       break;

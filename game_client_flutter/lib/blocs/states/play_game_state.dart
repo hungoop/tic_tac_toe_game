@@ -23,8 +23,17 @@ class PlayGameStateFailure extends PlayGameState {
 
 class PlayGameStateSuccess extends PlayGameState {
   final RoomView dataView;
+  final List<UserView> userViews;
 
-  PlayGameStateSuccess(this.dataView);
+  PlayGameStateSuccess(this.dataView, this.userViews);
+
+  PlayGameStateSuccess cloneWith({RoomView? dataView, List<UserView>? userViews}){
+    return PlayGameStateSuccess(
+        dataView ?? this.dataView,
+        userViews ?? this.userViews
+    );
+  }
+
 
 }
 class PlayGameStateLoading extends PlayGameState {}

@@ -7,6 +7,6 @@ export 'login_event.dart';
 export 'splash_screen_event.dart';
 export 'theme_event.dart';
 export 'tab_setting_event.dart';
-export 'tab_game_event.dart';
+export 'tab_user_event.dart';
 export 'tab_lobby_event.dart';
 export 'play_game_event.dart';

@@ -73,7 +73,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         initWSListening();
 
         AppBloc.lobbyBloc.add(TabLobbyEventFetched());
-        AppBloc.gameBloc.add(TabGameEventFetched());
+        AppBloc.gameBloc.add(TabUserEventFetched());
       }
 
     }
@@ -124,9 +124,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       }
       break;
       default:{
-        UtilLogger.log(
-            'TTT EXT ${event.cmd}', '${event.data}'
-        );
+        //UtilLogger.log(
+        //    'TTT EXT ${event.cmd}', '${event.data}'
+        //);
       }
     }
   }

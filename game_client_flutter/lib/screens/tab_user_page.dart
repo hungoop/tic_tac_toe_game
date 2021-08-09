@@ -5,59 +5,60 @@ import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/screens/screens.dart';
 
-class PlayTTTGamePage extends StatefulWidget {
+class TabUserPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _PlayTTTGamePage();
+    return _TabUserPage();
   }
 
 }
 
-class _PlayTTTGamePage extends State<PlayTTTGamePage> {
+class _TabUserPage extends State<TabUserPage> {
+  late TabUserBloc _tabUserBloc;
+
+  @override
+  void initState() {
+    _tabUserBloc = BlocProvider.of<TabUserBloc>(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Play Game'),
-      ),
       body: SafeArea(
-        child: BlocBuilder<PlayGameBloc, PlayGameState> (
-            builder: (context, gameState) {
-              RoomView? view;
-              List<UserView> userViews = [];
+        child: BlocBuilder<TabUserBloc, TabUserState> (
+            builder: (context, userState) {
+              List<UserView> dataViews = [];
 
-              if(gameState is PlayGameStateSuccess) {
-                view = gameState.dataView;
-                userViews = gameState.userViews;
+              if(userState is TabUserStateSuccess){
+                dataViews = userState.views;
               }
 
               return Column(
                 children: [
                   AppConnectivity(),
-                  Center(
-                    child: Text('Join Game'),
-                  ),
-                  if(view != null)...[
-                    Text(' Game ${view.title()}'),
+                  if(dataViews.isEmpty)...[
+                    Center(
+                      child: Text(
+                          'User - data not found!'
+                      ),
+                    )
                   ],
-                  if(view != null)...[
-                    Text(' Game ${view.subTitle()}'),
-                  ],
-                  if(userViews.isNotEmpty)...[
+                  if(dataViews.isNotEmpty)...[
                     Expanded(
                         child:
                         ListView.builder(
                           itemBuilder: (BuildContext buildContext, int index){
-                            if (index >= userViews.length) {
+                            if (index >= dataViews.length) {
                               return Center(
                                 child: Text(AppLanguage().translator(LanguageKeys.LOADING_DATA)),
                               );
                             } else {
-                              UserView bif = userViews[index];
+                              UserView bif = dataViews[index];
                               return _createUserItem(bif);
                             }
                           },
-                          itemCount: userViews.length,
+                          itemCount: dataViews.length,
                         )
                     )
                   ]
@@ -67,6 +68,7 @@ class _PlayTTTGamePage extends State<PlayTTTGamePage> {
             }),
       ),
     );
+
   }
 
   Widget _createUserItem(UserView view){
@@ -74,8 +76,9 @@ class _PlayTTTGamePage extends State<PlayTTTGamePage> {
       title: view.title(),
       subtitle: view.subTitle(),
       onPressed: (){
-
+        _tabUserBloc.add(TabUserEventJoinRoom(view.res));
       },
     );
   }
+
 }

@@ -8,6 +8,8 @@ import nett.server.st.game.event.GEvent;
 import nett.server.st.game.event.GEventParam;
 import nett.server.st.game.exception.GException;
 import nett.server.st.game.extension.BaseServerEventHandler;
+import ttt.nett.server.TTTExtension;
+import ttt.nett.server.game.impl.RoomGameControler;
 import ttt.nett.server.log.LogExt;
 
 @Instantiation(Instantiation.InstantiationMode.SINGLE_INSTANCE)
@@ -23,6 +25,20 @@ public class UserLogoutHandler extends BaseServerEventHandler {
 		List<Long> joinedRooms = (List<Long>) event.getParameter(GEventParam.JOINED_ROOM);
 		
 		log.debug(zone.getName() + " UserLogOutHandler => room:" + joinedRooms + ", user:" + user.getName());
+		
+		try {
+			long roomID = user.getLastJoinedRoom();
+			
+			Room r = this.getParentExtension().getParentZone().getRoomById(roomID);
+			
+			RoomGameControler controler = TTTExtension.getGameControler(r);
+			
+			if(controler != null ) {
+				controler.userGiveUp(user);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
 
 	}
 

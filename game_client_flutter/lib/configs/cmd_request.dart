@@ -8,5 +8,8 @@ class CMD {
   static const String INVITE_FRIEND         = "invitefriend";
   static const String GET_TIME              = "gettime";
   static const String ROOM_LIST             = "roomlist";
+  static const String USER_LIST             = "userlist";
+  static const String USER_IN_ROOM          = "userinroom";
+  static const String GAME_DATA             = "gamedata";
 
 }

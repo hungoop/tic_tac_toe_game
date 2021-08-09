@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:game_client_flutter/models/models.dart';
 
 abstract class PlayGameEvent extends Equatable {
   @override
@@ -6,4 +7,12 @@ abstract class PlayGameEvent extends Equatable {
 }
 
 class PlayGameEventFetched extends PlayGameEvent {}
-class PlayGameEventRefresh extends PlayGameEvent {}
+
+class PlayGameEventUserList extends PlayGameEvent {
+  final List<UserRes> lst;
+
+  PlayGameEventUserList(this.lst);
+
+  List<Object> get props => [lst];
+
+}

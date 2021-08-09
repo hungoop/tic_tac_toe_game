@@ -13,7 +13,7 @@ class AppBloc {
   static final splashBloc         = SplashScreenBloc();
   static final loginBloc          = LoginBloc();
   static final settingBloc        = TabSettingBloc();
-  static final gameBloc           = TabGameBloc();
+  static final gameBloc           = TabUserBloc();
   static final lobbyBloc          = TabLobbyBloc();
 
   static final List<BlocProvider> providers = [
@@ -44,7 +44,7 @@ class AppBloc {
     BlocProvider<TabSettingBloc>(
       create: (context) => settingBloc,
     ),
-    BlocProvider<TabGameBloc>(
+    BlocProvider<TabUserBloc>(
       create: (context) => gameBloc,
     ),
     BlocProvider<TabLobbyBloc>(

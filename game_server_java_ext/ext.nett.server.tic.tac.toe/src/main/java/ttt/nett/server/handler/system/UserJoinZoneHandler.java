@@ -28,39 +28,40 @@ public class UserJoinZoneHandler extends BaseServerEventHandler {
 		
 		log.debug("=======JOIN ZONE OK=======>>>>UserName: " + user.getName());
 		
-		JSONArray data = getRoomList(zon);
-		
+		JSONArray dataRooms = getRoomList(zon);
 		this.getApi().sendToUser(
 				user, 
 				CMD.ROOM_LIST.getCmd(), 
-				MessUtils.makeJsonData(data)
+				MessUtils.makeJsonData(dataRooms)
+			);
+		
+		JSONArray dataUsers = getUserList(zon);
+		this.getApi().sendToUser(
+				user, 
+				CMD.USER_LIST.getCmd(), 
+				MessUtils.makeJsonData(dataUsers)
 			);
 
 	}
 	
-	
 	private JSONArray getRoomList(Zone zone) {
 		List<Room> roomLst = zone.getRoomList();
 		
-		
 		JSONArray jArr = new JSONArray();
 		for(Room r : roomLst) {
-			//Map<String, Object> jRoom = new LinkedHashMap<String, Object>();
-			log.debug("getRoomList: " + r.toJson(AdConfig.LEVEL_ROOM));
-			JSONObject jO = r.toJson(AdConfig.LEVEL_ROOM);
-			
-			/*
-			try {
-				jRoom.put("ri", Utilities.parseLong(r.getId() + ""));
-			} catch (GParseException e) {
-				log.error(e.getMessage(), e);
-			}
-			jRoom.put("rn", r.getName());
-			jRoom.put("rc", r.getUserCount());
-			jRoom.put("rt", r.getType());*/
-			
-			jArr.put(jO);
-			
+			jArr.put(r.toJson(AdConfig.LEVEL_ROOM));
+		}
+		
+		return jArr;
+		
+	}
+	
+	private JSONArray getUserList(Zone zone) {
+		List<User> userLst = zone.getAllUsers();
+		
+		JSONArray jArr = new JSONArray();
+		for(User usr : userLst) {
+			jArr.put(usr.toJson());
 		}
 		
 		return jArr;

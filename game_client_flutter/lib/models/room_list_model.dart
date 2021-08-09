@@ -6,7 +6,6 @@ class RoomListModel {
 
   RoomListModel(this.dataViews);
 
-
   factory RoomListModel.fromRes(List<RoomRes> lst){
     List<RoomView> temps = lst.map((e) {
       return RoomView(e);

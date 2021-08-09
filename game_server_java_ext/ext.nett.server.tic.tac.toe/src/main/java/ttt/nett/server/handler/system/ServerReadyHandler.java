@@ -32,8 +32,9 @@ public class ServerReadyHandler extends BaseServerEventHandler {
 	}
 	
 	private void initRoomTest() {
-		for (int i = 0; i < 500; i++) {
-			makeRoom("ttt_room_" + i);
+		for (int i = 0; i < 20; i++) {
+			Room r = makeRoom("ttt_room_" + i);
+			ext.setGameControler(r);
 		}
 		
 	}
@@ -52,6 +53,7 @@ public class ServerReadyHandler extends BaseServerEventHandler {
 		try {
 			room = getApi().createRoom(ext.getParentZone(), rst, null, false, null, true, true);
 			log.info("TTT create room name: " + roomName + " OK");
+			
 		} catch (GCreateRoomException e) {
 			log.error("TTT create room name: " + roomName + " ERROR: " + e.getMessage());
 		}

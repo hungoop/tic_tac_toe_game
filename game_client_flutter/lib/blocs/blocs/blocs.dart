@@ -8,6 +8,6 @@ export 'login_bloc.dart';
 export 'splash_screen_bloc.dart';
 export 'them_bloc.dart';
 export 'tab_setting_bloc.dart';
-export 'tab_game_bloc.dart';
+export 'tab_user_bloc.dart';
 export 'tab_lobby_bloc.dart';
 export 'play_game_bloc.dart';

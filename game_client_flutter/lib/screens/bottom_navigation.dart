@@ -71,7 +71,7 @@ class _BottomNavigation extends State<BottomNavigation> with WidgetsBindingObser
       body: IndexedStack(
         children: <Widget>[
           TabLobbyPage(),
-          TabGamePage(),
+          TabUserPage(),
           TabSettingsPage()
         ],
         index: selectedIndex,

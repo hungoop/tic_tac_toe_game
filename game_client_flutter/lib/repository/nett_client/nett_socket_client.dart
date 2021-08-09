@@ -200,9 +200,15 @@ class NettSocketClient {
   void _sendMessage(String msg){
     if(socket != null){
       try{
+        //UtilLogger.log('_sendMessage', '$msg');
         socket.sink.add(msg);
-      } catch (ex){
-        print('-sendMesage-> $ex');
+      }
+      catch (ex, st){
+        UtilLogger.recordError(
+            ex,
+            stack: st
+        );
+        //print('-sendMesage-> $ex');
       }
     }
   }
@@ -280,49 +286,96 @@ class NettSocketClient {
                     data: data[ERROR_CONTENT_KEY]
                 )
             );
-          } else {
+          }
+          else {
             print('SYSTEM CLIENT => LOGIN_SUCCESS => $data');
-
             _onReceptionOfSysMessageFromServer(
-                WsSystemMessage(cmd: WsSystemMessage.LOGIN, data: "")
+                WsSystemMessage(
+                    cmd: WsSystemMessage.LOGIN,
+                    data: data
+                )
             );
           }
         }
         break;
         case WsSystemMessage.LOGOUT: {
           print('SYSTEM CLIENT => LOGOUT => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.LOGOUT,
+                  data: data
+              )
+          );
         }
         break;
         case WsSystemMessage.CREATE_ROOM: {
           print('SYSTEM CLIENT => CREATE_ROOM => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.CREATE_ROOM,
+                  data: data
+              )
+          );
         }
         break;
         case WsSystemMessage.JOINT_ROOM: {
           print('SYSTEM CLIENT => JOINT_ROOM => $data');
-
           _onReceptionOfSysMessageFromServer(
-              WsSystemMessage(cmd: WsSystemMessage.JOINT_ROOM, data: "test no data")
+              WsSystemMessage(
+                  cmd: WsSystemMessage.JOINT_ROOM,
+                  data: data
+              )
           );
         }
         break;
         case WsSystemMessage.LEAVE_ROOM: {
           print('SYSTEM CLIENT => LEAVE_ROOM => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.LEAVE_ROOM,
+                  data: data
+              )
+          );
         }
         break;
         case WsSystemMessage.ON_ROOM_LOST: {
           print('SYSTEM CLIENT => ON_ROOM_LOST => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.ON_ROOM_LOST,
+                  data: data
+              )
+          );
         }
         break;
         case WsSystemMessage.ON_USER_LOST: {
           print('SYSTEM CLIENT => ON_USER_LOST => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.ON_USER_LOST,
+                  data: data
+              )
+          );
         }
         break;
         case WsSystemMessage.ON_USER_ENTER_ROOM: {
           print('SYSTEM CLIENT => ON_USER_ENTER_ROOM => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.ON_USER_ENTER_ROOM,
+                  data: data
+              )
+          );
         }
         break;
         case WsSystemMessage.ON_USER_LEAVE_ROOM: {
           print('SYSTEM CLIENT => ON_USER_LEAVE_ROOM => $data');
+          _onReceptionOfSysMessageFromServer(
+              WsSystemMessage(
+                  cmd: WsSystemMessage.ON_USER_LEAVE_ROOM,
+                  data: data
+              )
+          );
         }
         break;
         default: {
