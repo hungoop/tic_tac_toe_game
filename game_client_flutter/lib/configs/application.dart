@@ -7,9 +7,8 @@ class Application {
   static const bool IS_LOCAL                          = true;
   static final WebSocketTTTGame chatSocket             = WebSocketTTTGame();
 
+  static String addressWsServer                   = 'ws://192.168.1.3:8722';
   static String zoneGameName                      = 'ttt_game';
-
-
 
   static String timeZoneName                      = DateTime.now().timeZoneName;
   static int delayTimeConnectFailCall             = 30;

@@ -64,12 +64,12 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         );
 
         yield ApplicationCompleted();
-
-
       }
 
       if (event is OnInitWSListening) {
-        Application.chatSocket.initWebSocketApi('ws://192.168.1.8:8722/ttt_game');
+        Application.chatSocket.initWebSocketApi(
+            '${Application.addressWsServer}/${Application.zoneGameName}'
+        );
         initWSListening();
 
         AppBloc.authBloc.add(OnAuthCheck());

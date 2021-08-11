@@ -28,7 +28,11 @@ public class UserDisconnectHandler extends BaseServerEventHandler {
 		log.debug(zone.getName() + " UserDisconnectHandler => room:" + joinedRooms + ", user:" + user.getName());
 		
 		try {
-			long roomID = joinedRooms.get(0);//user.getLastJoinedRoom();
+			long roomID = -1;
+			
+			if(joinedRooms.size() > 0) {
+				roomID = joinedRooms.get(0);//user.getLastJoinedRoom();
+			}
 			
 			Room r = this.getParentExtension().getParentZone().getRoomById(roomID);
 			

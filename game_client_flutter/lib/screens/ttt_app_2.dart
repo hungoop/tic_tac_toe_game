@@ -20,12 +20,12 @@ class TTTApp2 extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _LvChatApp();
+    return _TTTApp2();
   }
 
 }
 
-class _LvChatApp extends State<TTTApp2> {
+class _TTTApp2 extends State<TTTApp2> {
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
