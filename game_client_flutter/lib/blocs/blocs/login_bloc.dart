@@ -5,6 +5,7 @@ import 'package:game_client_flutter/blocs/blocs.dart';
 import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/exception/base_chat_exception.dart';
 import 'package:game_client_flutter/language/languages.dart';
+import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/repository/repository.dart';
 import 'package:game_client_flutter/utils/util_logger.dart';
 import 'package:game_client_flutter/utils/utils.dart';
@@ -41,7 +42,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
       else if (loginEvent is LoginEventPasswordChanged) {
-
         if(loginState is LoginStateSuccess){
           yield loginState.cloneWith(
               isValidPassword: Validators.isValidPassword(
@@ -65,6 +65,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             upass: GUIDGen.generate(),
             param: {}
         );
+
+        LoginStorage store = LoginStorage(
+            loginEvent.identification
+        );
+
+        store.save();
       }
       else if(loginEvent is LoginEventSuccess){
         yield LoginStateSuccess();

@@ -1,6 +1,8 @@
 class CMD {
   static const String MOBILE_APP_CONFIG         = "url_setting_mobile_app.config";
 
+  static const String JWT_TOKEN             = "jwt";
+
   static const String STOP_GAME             = "stopgame";
   static const String START_GAME            = "startgame";
   static const String PLAY_GAME             = "playgame";

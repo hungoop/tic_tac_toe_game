@@ -31,6 +31,11 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
   late LoginBloc _loginBloc;
 
+  CountryCode _cCodeDef = CountryCode(
+      code: 'VN',
+      dialCode: '84'
+  );
+
   late CountryCode? _countryCode;
   late TabController _tabController;
 
@@ -46,8 +51,11 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
+    _countryCode = _cCodeDef;
+
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.index = 1;
 
     _telephoneEditingController.addListener(() {
       _loginBloc.add(LoginEventIdentificationChanged(
@@ -102,10 +110,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
         identify,
         _passEditingController.text,
         _getLoginType(_tabController.index),
-        countryCode: _countryCode ?? CountryCode(
-            code: 'VN',
-            dialCode: '84'
-        )
+        countryCode: _countryCode ?? _cCodeDef
     ));
   }
 
@@ -431,6 +436,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             type: ButtonType.bigWith,
             loading: _loginBloc.state is LoginStateLoading,
           ),
+          /*
           spaceHeight,
           AppButton(
             AppLanguage().translator(
@@ -447,6 +453,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             onPressed: _onOpenForgetPasswordPage,
             type: ButtonType.bigNo,
           ),
+
+           */
         ],
       ),
     );

@@ -5,9 +5,9 @@ import 'package:game_client_flutter/repository/repository.dart';
 class Application {
   static const bool IS_ActiveTest                     = false;
   static const bool IS_LOCAL                          = true;
-  static final WebSocketTTTGame chatSocket             = WebSocketTTTGame();
+  static final WebSocketTTTGame chatSocket            = WebSocketTTTGame();
 
-  static String addressWsServer                   = 'ws://192.168.1.3:8722';
+  static String addressWsServer                   = 'ws://192.168.1.5:8722';
   static String zoneGameName                      = 'ttt_game';
 
   static String timeZoneName                      = DateTime.now().timeZoneName;
@@ -104,8 +104,5 @@ class Application {
   static const kTestingCrashlytics               = true;
   static const int NUMBER_ACCOUNT_SAVE           = 4;
   static const double BOX_HEIGHT_SWITCH_ACCOUNT  = 265;
-
-  static const String MENTION_SPLIT_KEY          = '|@mt#|';
-  static const String USER_INFO_SPLIT_KEY        = '|#mt#|';
 
 }

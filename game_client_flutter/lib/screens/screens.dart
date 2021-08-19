@@ -11,3 +11,4 @@ export 'ttt_app_2.dart';
 export 'font_setting_page.dart';
 export 'language_option_page.dart';
 export 'theme_option_page.dart';
+export 'drawer_menu_page.dart';

@@ -17,3 +17,5 @@ class TabLobbyEventJoinRoom extends TabLobbyEvent {
   TabLobbyEventJoinRoom(this.res);
 
 }
+
+class TabLobbyEventCreateRoom extends TabLobbyEvent {}

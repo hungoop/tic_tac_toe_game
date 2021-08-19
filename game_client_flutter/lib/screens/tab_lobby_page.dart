@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
+import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/screens/screens.dart';
@@ -14,19 +15,23 @@ class TabLobbyPage extends StatefulWidget {
 }
 
 class _TabLobbyPage extends State<TabLobbyPage> {
-  late TabLobbyBloc lobbyBloc;
+  late TabLobbyBloc _lobbyBloc;
   
   @override
   void initState() {
     super.initState();
 
-    lobbyBloc = BlocProvider.of<TabLobbyBloc>(context);
+    _lobbyBloc = BlocProvider.of<TabLobbyBloc>(context);
   }
   
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerMenuPage(),
+      appBar: AppBar(
+        title: Text('Lobby'),
+      ),
       body: SafeArea(
         child: BlocBuilder<TabLobbyBloc, TabLobbyState> (
             builder: (context, lobbyState) {
@@ -35,7 +40,6 @@ class _TabLobbyPage extends State<TabLobbyPage> {
               if(lobbyState is TabLobbyStateSuccess){
                 dataViews = lobbyState.views;
               }
-
 
               return Column(
                 children: [
@@ -49,8 +53,7 @@ class _TabLobbyPage extends State<TabLobbyPage> {
                   ],
                   if(dataViews.isNotEmpty)...[
                     Expanded(
-                      child:
-                        ListView.builder(
+                      child: ListView.builder(
                           itemBuilder: (BuildContext buildContext, int index){
                             if (index >= dataViews.length) {
                               return Center(
@@ -70,6 +73,18 @@ class _TabLobbyPage extends State<TabLobbyPage> {
 
             }),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          _lobbyBloc.add(TabLobbyEventCreateRoom());
+        },
+        tooltip: 'Add',
+        mini: true,
+        child: Icon(
+          Icons.add,
+          //size: Application.SIZE_ICON_VOICE_CALL,
+          color: AppTheme.currentTheme.color,
+        ),
+      ),
     );
   }
 
@@ -78,7 +93,7 @@ class _TabLobbyPage extends State<TabLobbyPage> {
         title: view.title(),
         subtitle: view.subTitle(),
         onPressed: (){
-          lobbyBloc.add(TabLobbyEventJoinRoom(view.res));
+          _lobbyBloc.add(TabLobbyEventJoinRoom(view.res));
         },
     );
   }

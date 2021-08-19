@@ -1,9 +1,8 @@
 
 import 'dart:async';
-import 'dart:convert';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
+import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
 class AppStateBloc extends Bloc<AppStateEvent, AppState> {
@@ -20,7 +19,7 @@ class AppStateBloc extends Bloc<AppStateEvent, AppState> {
 
       if (event is OnResume) {
         if(currState is Background){
-          //Application.chatSocket?.forceCheckReConnect();
+          Application.chatSocket.forceCheckReConnect();
         }
 
         yield Active();

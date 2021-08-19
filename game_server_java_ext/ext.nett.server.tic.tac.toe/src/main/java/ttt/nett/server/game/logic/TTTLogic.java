@@ -10,6 +10,21 @@ import ttt.nett.server.model.entity.TTTPlayer;
 public class TTTLogic {
 	private TTTBoard _board;
 	
+	// quản lý thông tin play game
+	// + ván game đang diễn ra
+	// + ván game đang chờ
+	
+	// quản lý thông tin user
+	// + join đồng ý làm người chơi 
+	// + or chỉ xem
+	// + chuyển từ người chơi thành  người xem
+	
+	// quản lý trạng thái room
+	// + khi nào start, stop, result game
+	// + user join, leave, disconnect(network error), logout, 
+	// + xác định chủ bàn
+	// + 
+	
 	public JSONObject getData() {
 		return _board.toJson();
 	}		

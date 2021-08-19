@@ -2,6 +2,7 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:game_client_flutter/blocs/blocs.dart';
 import 'package:game_client_flutter/configs/configs.dart';
+import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/utils/utils.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -46,9 +47,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
 
       if (event is OnClear) {
+        LoginStorage.logout();
+
         yield AuthenticationFail(
           error: "OnClear"
         );
+
+        Application.chatSocket.logout();
 
       }
     }

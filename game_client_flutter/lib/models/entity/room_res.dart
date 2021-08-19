@@ -15,6 +15,8 @@
 */
 import 'dart:convert';
 
+import 'package:game_client_flutter/utils/utils.dart';
+
 class RoomRes {
   int rID;
   String rName;
@@ -34,6 +36,18 @@ class RoomRes {
     required this.maxSpectator
   });
 
+
+  factory RoomRes.newRes(String zoneName){
+    return RoomRes(
+      rID: -1,
+      rName: GUIDGen.generate(),
+      zName: zoneName,
+      uCount: 0,
+      isActive: false,
+      maxPlayer: 8,
+      maxSpectator: 100,
+    );
+  }
 
   factory RoomRes.fromJson(dynamic json){
     return RoomRes(

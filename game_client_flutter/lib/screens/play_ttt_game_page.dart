@@ -36,9 +36,19 @@ class _PlayTTTGamePage extends State<PlayTTTGamePage> {
             ),
             onPressed: (){
               RoomRes? view = _playGameBloc.res;
-              List<UserView> userViews = _playGameBloc.userListModel.dataViews;
+              if(view != null){
+                //List<UserView> userViews = _playGameBloc.userListModel.dataViews;
+                //showBoxReadMembers(userViews, view);
 
-              showBoxReadMembers(userViews, view);
+                RoomRes? res = _playGameBloc.res;
+                if(res != null){
+                  RouteGenerator.pushNamed(
+                      ScreenRoutes.FRIEND_LIST,
+                      arguments: res
+                  );
+                }
+              }
+
             },
           )
         ],

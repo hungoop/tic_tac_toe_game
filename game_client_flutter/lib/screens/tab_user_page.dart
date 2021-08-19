@@ -25,6 +25,20 @@ class _TabUserPage extends State<TabUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: DrawerMenuPage(),
+      appBar: AppBar(
+        title: Text('User Online'),
+        actions: [
+          IconButton(
+            icon: Icon(
+                Icons.scatter_plot_outlined
+            ),
+            onPressed: (){
+            },
+          ),
+
+        ],
+      ),
       body: SafeArea(
         child: BlocBuilder<TabUserBloc, TabUserState> (
             builder: (context, userState) {

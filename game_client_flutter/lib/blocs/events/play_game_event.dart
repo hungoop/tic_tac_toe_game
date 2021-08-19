@@ -6,7 +6,15 @@ abstract class PlayGameEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class PlayGameEventFetched extends PlayGameEvent {}
+class PlayGameEventFetched extends PlayGameEvent {
+  final RoomRes res;
+
+  PlayGameEventFetched(this.res);
+
+  @override
+  List<Object> get props => [res];
+}
+class PlayGameEventCreate extends PlayGameEvent {}
 
 class PlayGameEventUserList extends PlayGameEvent {
   final List<UserRes> lst;

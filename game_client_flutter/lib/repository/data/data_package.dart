@@ -11,6 +11,10 @@ class DataPackage {
   final String errorMsg;
   final dynamic data;
 
+  String dataAsString() {
+    return data.toString();
+  }
+
   dynamic dataToJson() {
     return jsonDecode(data);
   }

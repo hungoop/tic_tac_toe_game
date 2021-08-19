@@ -12,8 +12,6 @@ public class TTTPlayer {
 	
 	private TEAM_TYPE _team;
 	
-	
-	
 	public TEAM_TYPE getTeam() {
 		return _team;
 	}

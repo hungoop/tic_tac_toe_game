@@ -29,9 +29,9 @@ class TabUserBloc extends Bloc<TabUserEvent, TabUserState> {
         yield TabUserStateSuccess(userListModel.dataViews);
       }
       else if(event is TabUserEventJoinRoom){
-        if(currState is TabLobbyStateSuccess){
+        if(currState is FriendListStateSuccess){
           RouteGenerator.pushNamed(
-              ScreenRoutes.PLAY_GAME,
+              ScreenRoutes.JOIN_GAME,
               arguments: event.res
           );
         }

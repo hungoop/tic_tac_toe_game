@@ -14,7 +14,7 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigation extends State<BottomNavigation> with WidgetsBindingObserver {
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   @override
   void initState() {

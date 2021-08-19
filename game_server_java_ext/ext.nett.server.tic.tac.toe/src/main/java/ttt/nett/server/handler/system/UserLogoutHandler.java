@@ -27,15 +27,21 @@ public class UserLogoutHandler extends BaseServerEventHandler {
 		log.debug(zone.getName() + " UserLogOutHandler => room:" + joinedRooms + ", user:" + user.getName());
 		
 		try {
-			long roomID = user.getLastJoinedRoom();
+			long roomID = -1;
 			
-			Room r = this.getParentExtension().getParentZone().getRoomById(roomID);
-			
-			RoomGameControler controler = TTTExtension.getGameControler(r);
-			
-			if(controler != null ) {
-				controler.leaveGame(user);
+			if(joinedRooms.size() > 0) {
+				//roomID = joinedRooms.get(0);//user.getLastJoinedRoom();
+				roomID = user.getLastJoinedRoom();
+				
+				Room r = this.getParentExtension().getParentZone().getRoomById(roomID);
+				
+				RoomGameControler controler = TTTExtension.getGameControler(r);
+				
+				if(controler != null ) {
+					controler.leaveGame(user);
+				}
 			}
+			
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}

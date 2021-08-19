@@ -6,20 +6,39 @@ import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/models/models.dart';
 import 'package:game_client_flutter/repository/repository.dart';
 import 'package:game_client_flutter/utils/util_logger.dart';
+import 'package:game_client_flutter/utils/utils.dart';
 
 class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
-  RoomRes res;
+  late RoomRes? res;
   late UserListModel userListModel;
   late GameTTTModel gameTTTModel;
 
-  PlayGameBloc(this.res) : super(PlayGameStateInitial());
+  PlayGameBloc() : super(PlayGameStateInitial());
 
   @override
   Stream<PlayGameState> mapEventToState(PlayGameEvent event) async* {
     var currState = state;
 
     try {
-      if(event is PlayGameEventFetched) {
+      if(event is PlayGameEventCreate) {
+        if(currState is PlayGameStateInitial){
+          this.res = RoomRes.newRes(Application.zoneGameName);
+
+          initWSListening();
+          createOrJoinRoom();
+          userListModel = UserListModel.fromRes([]);
+          gameTTTModel = GameTTTModel.fromRes([]);
+
+        }
+
+        yield PlayGameStateSuccess(
+            RoomView(res!),
+            userListModel.dataViews,
+            gameTTTModel.dataViews
+        );
+      }
+      else if(event is PlayGameEventFetched) {
+        this.res = event.res;
         if(currState is PlayGameStateInitial){
           initWSListening();
           joinRoom();
@@ -28,7 +47,7 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
         }
 
         yield PlayGameStateSuccess(
-            RoomView(res),
+            RoomView(res!),
             userListModel.dataViews,
             gameTTTModel.dataViews
         );
@@ -85,21 +104,27 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
     return super.close();
   }
 
+  void createOrJoinRoom(){
+    Application.chatSocket.createOrJoinRoom(
+      res?.rName ?? GUIDGen.generate(),
+    );
+  }
+
   void joinRoom(){
     Application.chatSocket.joinRoom(
-        roomId: res.rID
+        roomId: res?.rID ?? -1
     );
   }
 
   void leaveRoom(){
     Application.chatSocket.leaveRoom(
-        roomId: res.rID
+        roomId: res?.rID ?? -1
     );
   }
 
   void getUserInRoom(){
     var mes = {};
-    mes["ri"] = res.rID;
+    mes["ri"] = res?.rID ?? -1;
     Application.chatSocket.sendExtData(
         CMD.USER_IN_ROOM, mes
     );
@@ -161,8 +186,14 @@ class PlayGameBloc extends Bloc<PlayGameEvent, PlayGameState> {
         getUserInRoom();
       }
       break;
-      case WsSystemMessage.CREATE_OR_JOIN_ROOM:{
+      case WsSystemMessage.CREATE_ROOM:{
         UtilLogger.log('CREATE_OR_JOIN_ROOM ', '${event.data}');
+        int roomID = event.data['r'];
+
+        UtilLogger.log('roomID ', '$roomID');
+
+        res?.rID = roomID;
+
         getUserInRoom();
       }
       break;

@@ -5,3 +5,4 @@ export 'model_theme.dart';
 export 'room_list_model.dart';
 export 'user_list_model.dart';
 export 'game_ttt_model.dart';
+export 'login_storage.dart';

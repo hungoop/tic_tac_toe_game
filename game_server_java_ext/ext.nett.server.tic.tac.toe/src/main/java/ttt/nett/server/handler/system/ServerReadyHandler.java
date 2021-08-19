@@ -32,9 +32,10 @@ public class ServerReadyHandler extends BaseServerEventHandler {
 	}
 	
 	private void initRoomTest() {
-		for (int i = 0; i < 20; i++) {
-			Room r = makeRoom("ttt_room_" + i);
-			ext.setGameControler(r);
+		for (int i = 0; i < 2; i++) {
+			makeRoom("ttt_room_" + i);
+			//Room r = makeRoom("ttt_room_" + i);
+			//ext.setGameControler(r);
 		}
 		
 	}

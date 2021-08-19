@@ -5,6 +5,7 @@ import 'package:game_client_flutter/blocs/blocs.dart';
 import 'package:game_client_flutter/configs/configs.dart';
 import 'package:game_client_flutter/language/languages.dart';
 import 'package:game_client_flutter/models/models.dart';
+import 'package:game_client_flutter/screens/friend_list_page.dart';
 import 'package:game_client_flutter/screens/play_ttt_game_page.dart';
 import 'package:game_client_flutter/screens/screens.dart';
 import 'package:game_client_flutter/utils/utils.dart';
@@ -75,18 +76,6 @@ class RouteGenerator {
     }
   }
 
-  static void popScreenCall() async {
-    UtilLogger.log('popScreenCall $currRouteScreen', 'isCalling ${isCalling()}');
-
-    if(navigatorKey.currentState != null && navigatorKey.currentState!.canPop()){
-      navigatorKey.currentState!.popUntil((Route<dynamic> route) {
-            UtilLogger.log('maybePopUntil ==>> ', '$route');
-            return  route.settings.name == ScreenRoutes.CHATS || route.isFirst;
-          }
-      );
-    }
-  }
-
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case ScreenRoutes.LOGIN: {
@@ -121,7 +110,7 @@ class RouteGenerator {
             }
         );
       }
-      case ScreenRoutes.PLAY_GAME: {
+      case ScreenRoutes.JOIN_GAME: {
         var res = settings.arguments;
         if(res is RoomRes){
           return MaterialPageRoute(
@@ -129,8 +118,8 @@ class RouteGenerator {
             builder: (_) {
               return BlocProvider<PlayGameBloc>(
                 create: (context) {
-                  return PlayGameBloc(res)
-                    ..add(PlayGameEventFetched());
+                  return PlayGameBloc()
+                    ..add(PlayGameEventFetched(res));
                 },
                 child: PlayTTTGamePage(),
               );
@@ -139,7 +128,38 @@ class RouteGenerator {
 
         return _errorRoute(settings);
       }
+      case ScreenRoutes.CREATE_GAME: {
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              return BlocProvider<PlayGameBloc>(
+                create: (context) {
+                  return PlayGameBloc()
+                    ..add(PlayGameEventCreate());
+                },
+                child: PlayTTTGamePage(),
+              );
+            }
+          );
+      }
+      case ScreenRoutes.FRIEND_LIST: {
+        var res = settings.arguments;
+        if(res is RoomRes){
+          return MaterialPageRoute(
+              settings: settings,
+              builder: (_) {
+                return BlocProvider<FriendListBloc>(
+                  create: (context) {
+                    return FriendListBloc(res)
+                      ..add(FriendListEventFetched());
+                  },
+                  child: FriendListPage(),
+                );
+              });
+        }
 
+        return _errorRoute(settings);
+      }
       default:
         return _errorRoute(settings);
     }
@@ -176,24 +196,6 @@ class RouteGenerator {
       return true;
     }
     return false;
-  }
-
-  static bool isVoipRunning(){
-    return voipRunning;
-  }
-
-  static bool isCalling(){
-    if (isScreen(ScreenRoutes.PHONE_RECEIVER) || isScreen(ScreenRoutes.PHONE_CALLER) || isVoipRunning()){
-      return true;
-    }
-    return false;
-  }
-
-  static void resetScreen(){
-    if(currRouteScreen == ScreenRoutes.CHATS){
-      //updateVoipRunning(false);
-    }
-    currRouteScreen = "";
   }
 
   static Widget? currentWidget(){
