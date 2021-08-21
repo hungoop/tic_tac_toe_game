@@ -12,10 +12,18 @@ class TabLobbyEventRoomList extends TabLobbyEvent {
 }
 
 class TabLobbyEventJoinRoom extends TabLobbyEvent {
-  RoomRes res;
+  final RoomRes res;
+  final bool isAccept;
 
-  TabLobbyEventJoinRoom(this.res);
+  TabLobbyEventJoinRoom(this.res, this.isAccept);
 
 }
 
 class TabLobbyEventCreateRoom extends TabLobbyEvent {}
+
+class TabLobbyEventInvitedJoin extends TabLobbyEvent {
+  RoomRes res;
+
+  TabLobbyEventInvitedJoin(this.res);
+
+}

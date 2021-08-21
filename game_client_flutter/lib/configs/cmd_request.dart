@@ -13,5 +13,6 @@ class CMD {
   static const String USER_LIST             = "userlist";
   static const String USER_IN_ROOM          = "userinroom";
   static const String GAME_DATA             = "gamedata";
+  static const String USERS_FREE            = "userfree";
 
 }

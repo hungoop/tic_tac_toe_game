@@ -30,10 +30,18 @@ class TabLobbyBloc extends Bloc<TabLobbyEvent, TabLobbyState> {
       }
       else if(event is TabLobbyEventJoinRoom){
         if(currState is TabLobbyStateSuccess){
-          RouteGenerator.pushNamed(
-              ScreenRoutes.JOIN_GAME,
-              arguments: event.res
-          );
+          if(event.isAccept) {
+            RouteGenerator.pushNamed(
+                ScreenRoutes.JOIN_GAME,
+                arguments: event.res
+            );
+          }
+
+          if(currState is TabLobbyStateConfirm){
+            yield TabLobbyStateSuccess(
+                roomListModel.dataViews
+            );
+          }
         }
 
       }
@@ -44,6 +52,14 @@ class TabLobbyBloc extends Bloc<TabLobbyEvent, TabLobbyState> {
           //);
           RouteGenerator.pushNamed(
               ScreenRoutes.CREATE_GAME,
+          );
+        }
+      }
+      else if(event is TabLobbyEventInvitedJoin){
+        if(currState is TabLobbyStateSuccess){
+          yield TabLobbyStateConfirm(
+              roomListModel.dataViews,
+              event.res
           );
         }
       }
@@ -93,6 +109,17 @@ class TabLobbyBloc extends Bloc<TabLobbyEvent, TabLobbyState> {
           List<RoomRes> lst = RoomListModel.parseRes(data);
 
           this.add(TabLobbyEventRoomList(lst));
+        }
+      }
+      break;
+      case CMD.INVITE_FRIEND:{
+        DataPackage data = DataPackage.fromJson(event.data);
+
+        if(data.isOK(iSuccess: 0)){
+          UtilLogger.log('INVITE_FRIEND', '$data');
+
+          RoomRes res = RoomRes.fromJson(data.dataToJson());
+          this.add(TabLobbyEventInvitedJoin(res));
         }
       }
       break;

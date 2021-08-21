@@ -39,7 +39,7 @@ class WebSocketApi {
     _authData = authData ?? _authData;
 
     String urlAndData = '$_serverAddress?$_authData';
-    client.initAndConnect(serverAddress: urlAndData);
+    client.reConnect(serverAddress: urlAndData);
 
     _isNextReconnect = false;
   }

@@ -17,6 +17,9 @@ public interface IGameHandler extends ISystemHandler {
 	
 	Position play(User user, int x, int y);
 	
-	JSONArray getUserList();
+	JSONArray getUserListOfRoom();
+	JSONArray getUserListFree();
+	
+	void inviteJoinGame(User user, JSONArray friendLst);
 
 }

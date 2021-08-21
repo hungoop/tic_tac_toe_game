@@ -24,6 +24,9 @@ import 'package:game_client_flutter/repository/repository.dart';
 class GameTTTModel {
   List<PositionView> dataViews;
 
+  // players list
+  // status game (start, stop, result)
+
   GameTTTModel(this.dataViews);
 
   factory GameTTTModel.fromRes(List<PositionRes> lst){

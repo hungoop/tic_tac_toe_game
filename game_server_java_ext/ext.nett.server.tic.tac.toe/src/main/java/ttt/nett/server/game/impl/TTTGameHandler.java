@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import nett.server.st.game.entity.Room;
 import nett.server.st.game.entity.User;
 import nett.server.st.game.exception.GRoomException;
+import nett.server.st.game.extension.GExtension;
+import ttt.nett.server.TTTExtension;
 import ttt.nett.server.game.IGameHandler;
 import ttt.nett.server.game.logic.TTTBoard;
 import ttt.nett.server.game.logic.TTTLogic;
@@ -18,13 +20,15 @@ import ttt.nett.server.model.entity.TTTPlayer;
 
 public class TTTGameHandler implements IGameHandler {
 	private static Logger log = LogExt.getLogApp(TTTGameHandler.class);
+	private GExtension _ext;
 	private Room _roomGame;
 	private TTTBoard _board;
 	private TTTLogic _logic;
 	private TTTRule _rule;
 	
 	
-	public TTTGameHandler(Room roomGame) {
+	public TTTGameHandler(TTTExtension ext, Room roomGame) {
+		_ext = ext;
 		_roomGame = roomGame;
 		
 		_board = new TTTBoard();
@@ -48,13 +52,14 @@ public class TTTGameHandler implements IGameHandler {
 	@Override
 	public void leaveRoom(User user) {
 		TTTPlayer player = _logic.leaveRoom(user);
+		/*
 		if(player != null) {
 			try {
 				_roomGame.switchPlayerToSpectator(player.getUser());
 			} catch (GRoomException e) {
 				log.error(e.getMessage(), e);
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -100,12 +105,36 @@ public class TTTGameHandler implements IGameHandler {
 	}
 
 	@Override
-	public JSONArray getUserList() {
+	public JSONArray getUserListOfRoom() {
 		List<User> userLst = _roomGame.getUserList();
 		
 		JSONArray jArr = new JSONArray();
 		for(User usr : userLst) {
 			jArr.put(usr.toJson());
+		}
+		
+		return jArr;
+	}
+
+	@Override
+	public void inviteJoinGame(User user, JSONArray friendLst) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public JSONArray getUserListFree() {
+		List<User> userLstOfZone = ((TTTExtension)_ext).getUserLst();
+		List<User> userLsOfRoomt = _roomGame.getUserList();
+		
+		userLstOfZone.removeAll(userLsOfRoomt);
+		
+		
+		JSONArray jArr = new JSONArray();
+		for(User usr : userLstOfZone) {
+			if(usr.isSpectator()) {
+				jArr.put(usr.toJson());
+			}
 		}
 		
 		return jArr;

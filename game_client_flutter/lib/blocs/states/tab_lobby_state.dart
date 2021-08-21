@@ -27,3 +27,11 @@ class TabLobbyStateSuccess extends TabLobbyState {
   TabLobbyStateSuccess(this.views);
 
 }
+
+class TabLobbyStateConfirm extends TabLobbyStateSuccess {
+  final RoomRes res;
+  TabLobbyStateConfirm(
+      List<RoomView> views,
+      this.res
+  ):super(views);
+}

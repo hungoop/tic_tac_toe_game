@@ -164,6 +164,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         AppBloc.connectivityBloc.add(ConnectivityEventWsError(
             errorCode: LanguageKeys.CONNECT_SERVER_FAILRURE
         ));
+
+        AppBloc.authBloc.add(OnAuthCheck());
       }
       break;
       case WsSystemMessage.ON_USER_PING:{
@@ -176,7 +178,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         if(data == 'OK'){
           AppBloc.authBloc.add(OnAuthProcess());
         }
-
+        AppBloc.connectivityBloc.add(ConnectivityEventWsPingSuccess());
         UtilLogger.log('LOGIN', '$data');
       }
       break;

@@ -23,7 +23,7 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
           initWSListening();
           friendListModel = UserListModel.fromRes([]);
 
-          getUserInRoom();
+          getUserFree();
         }
       }
       else if(event is FriendListEventUserList){
@@ -78,11 +78,11 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
     return super.close();
   }
 
-  void getUserInRoom(){
+  void getUserFree(){
     var mes = {};
-    mes["ri"] = roomRes.rID;
+    //mes["ri"] = roomRes.rID;
     Application.chatSocket.sendExtData(
-        CMD.USER_IN_ROOM, mes
+        CMD.USERS_FREE, mes
     );
   }
 
@@ -107,7 +107,7 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
 
   _onExtMessageReceived(WsExtensionMessage event) async {
     switch(event.cmd) {
-      case CMD.USER_IN_ROOM:{
+      case CMD.USERS_FREE:{
         DataPackage data = DataPackage.fromJson(event.data);
 
         if(data.isOK(iSuccess: 0)){

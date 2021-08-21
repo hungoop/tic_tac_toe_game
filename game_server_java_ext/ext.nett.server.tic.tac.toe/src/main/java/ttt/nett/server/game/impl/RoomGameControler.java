@@ -1,5 +1,6 @@
 package ttt.nett.server.game.impl;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import nett.server.st.game.entity.User;
@@ -69,8 +70,17 @@ public class RoomGameControler {
 		
 	}
 	
-	public void getUserList(User sender) {
-		_gameApi.sendUserList(sender, _gameHandler.getUserList());
+	public void getUserListOfRoom(User sender) {
+		_gameApi.sendUserListOfRoom(sender, _gameHandler.getUserListOfRoom());
 	}
+	
+	public void getUserListFree(User sender) {
+		_gameApi.sendUsersFree(sender, _gameHandler.getUserListFree());
+	}
+	
+	public void sendInviteData(User sender, JSONArray jArr) {
+		_gameApi.sendInviteData(sender, jArr);
+	}
+	
 
 }

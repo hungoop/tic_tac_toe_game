@@ -7,8 +7,11 @@ import nett.server.st.game.entity.User;
 
 public interface IGameApi {
 	
-	void sendUserList(User sender, JSONArray jArr);
+	void sendUsersFree(User sender, JSONArray jArr);
+	void sendUserListOfRoom(User sender, JSONArray jArr);
 	void sendGameData(User sender, JSONObject jArr);
 	void sendGameData(JSONObject gameData);
+	
+	void sendInviteData(User sender, JSONArray jArr);
 
 }

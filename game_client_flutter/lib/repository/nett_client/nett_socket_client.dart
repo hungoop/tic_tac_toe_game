@@ -103,6 +103,18 @@ class NettSocketClient {
 
   }
 
+  void reConnect({required String serverAddress}) {
+    initAndConnect(serverAddress: serverAddress);
+
+    print('SYSTEM CLIENT => RECONNECT NOTIFY => OK');
+    _onReceptionOfSysMessageFromServer(
+        WsSystemMessage(
+            cmd: WsSystemMessage.ON_RECONNECT,
+            data: 'OK'
+        )
+    );
+  }
+
   void login({required String zone, required String uname, required String upass, required Object param}){
     var mes = {};
     mes["un"] = uname;

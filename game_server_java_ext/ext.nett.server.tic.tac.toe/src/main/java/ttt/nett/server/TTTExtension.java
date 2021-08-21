@@ -1,8 +1,14 @@
 package ttt.nett.server;
 
+import java.util.List;
+
+import org.json.JSONArray;
 import org.slf4j.Logger;
 
+import nett.server.st.data.Session;
 import nett.server.st.game.entity.Room;
+import nett.server.st.game.entity.User;
+import nett.server.st.game.entity.Zone;
 import nett.server.st.game.event.GEventType;
 import nett.server.st.game.extension.GExtensionHTTP;
 import ttt.nett.server.command.CMD;
@@ -85,9 +91,29 @@ public class TTTExtension extends GExtensionHTTP {
 				RoomGameControler.class, 
 				new RoomGameControler(
 						new GameAPI(this, roomGame),
-						new TTTGameHandler(roomGame)
+						new TTTGameHandler(this, roomGame)
 				)
 		);
+	}
+	
+	public List<User> getUserLst() {
+		return this.getParentZone().getAllUsers();
+	}
+	
+	public List<Session> getSessionLst() {
+		return this.getParentZone().getAllSessions();
+	}
+	
+	public JSONArray getUserList() {
+		List<User> userLst = this.getParentZone().getAllUsers();
+		
+		JSONArray jArr = new JSONArray();
+		for(User usr : userLst) {
+			jArr.put(usr.toJson());
+		}
+		
+		return jArr;
+		
 	}
 
 }

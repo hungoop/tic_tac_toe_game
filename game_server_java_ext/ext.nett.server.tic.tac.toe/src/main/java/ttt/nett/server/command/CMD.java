@@ -6,8 +6,9 @@ import nett.server.st.game.extension.BaseHTTPClientRequestHandler;
 import ttt.nett.server.handler.ext.ws.*;
 
 public enum CMD {
+	USER_LIST_FREE("userfree", null, GetUsersFreeRequest.class),
 	GAME_DATA("gamedata", null, null),
-	USER_IN_ROOM("userinroom", null, GetUserInRoomReqest.class),
+	USER_IN_ROOM("userinroom", null, GetUserInRoomRequest.class),
 	USER_LIST("userlist", null, null),
 	ROOM_LIST("roomlist", null, null),
 	STOP_GAME("stopgame", null, StopGameWSRequest.class),

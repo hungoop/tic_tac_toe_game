@@ -23,8 +23,7 @@ class _TabLobbyPage extends State<TabLobbyPage> {
 
     _lobbyBloc = BlocProvider.of<TabLobbyBloc>(context);
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +36,18 @@ class _TabLobbyPage extends State<TabLobbyPage> {
             builder: (context, lobbyState) {
               List<RoomView> dataViews = [];
 
+              if(lobbyState is TabLobbyStateConfirm){
+                dataViews = lobbyState.views;
+                RoomRes res = lobbyState.res;
+
+                Future.delayed(Duration(milliseconds: 1000),(){
+                  _confirmJoinGame(
+                      errorMsg: 'You invated join game ${res.rName}',
+                      roomRes: res
+                  );
+                });
+              }
+
               if(lobbyState is TabLobbyStateSuccess){
                 dataViews = lobbyState.views;
               }
@@ -47,7 +58,7 @@ class _TabLobbyPage extends State<TabLobbyPage> {
                   if(dataViews.isEmpty)...[
                     Center(
                       child: Text(
-                          'Lobby - data not found!'
+                          'data not found!'
                       ),
                     )
                   ],
@@ -93,9 +104,46 @@ class _TabLobbyPage extends State<TabLobbyPage> {
         title: view.title(),
         subtitle: view.subTitle(),
         onPressed: (){
-          _lobbyBloc.add(TabLobbyEventJoinRoom(view.res));
+          _lobbyBloc.add(
+              TabLobbyEventJoinRoom(
+                  view.res,
+                  true
+              )
+          );
         },
     );
   }
 
+  _confirmJoinGame({required String errorMsg, required RoomRes roomRes}) {
+    final baseDialog = AppAlertDialog (
+        title: AppLanguage().translator(
+            AppLanguage().translator(LanguageKeys.APP_TITLE)
+        ),
+        content: Text(
+            errorMsg
+        ),
+        yesOnPressed: () {
+          if(this.mounted){
+            RouteGenerator.maybePop();
+            _lobbyBloc.add(TabLobbyEventJoinRoom(
+                roomRes,
+                true
+            ));
+          }
+        },
+        noOnPressed: (){
+          if(this.mounted){
+            RouteGenerator.maybePop();
+            _lobbyBloc.add(TabLobbyEventJoinRoom(
+                roomRes,
+                false
+            ));
+          }
+        },
+        txtYes: AppLanguage().translator(LanguageKeys.AGREE_TEXT_ALERT),
+        txtNo: AppLanguage().translator(LanguageKeys.CANCEL_TEXT_ALERT)
+    );
+
+    showDialog(context: context, builder: (BuildContext context) => baseDialog);
+  }
 }

@@ -2,6 +2,7 @@
 import 'package:game_client_flutter/repository/repository.dart';
 
 class WsSystemMessage extends WsMessageBase {
+  static const ON_RECONNECT         = -3;
   static const ON_CLIENT_ERROR      = -2;
   static const ON_CLIENT_DONE       = -1;
   static const LOGIN                = 1;

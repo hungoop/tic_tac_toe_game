@@ -32,7 +32,20 @@ class _PlayTTTGamePage extends State<PlayTTTGamePage> {
         actions: <Widget> [
           IconButton(
             icon: Icon(
-              Icons.list
+                Icons.list
+            ),
+            onPressed: (){
+              RoomRes? view = _playGameBloc.res;
+              if(view != null){
+                List<UserView> userViews = _playGameBloc.userListModel.dataViews;
+                showBoxReadMembers(userViews, view);
+              }
+
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.add_circle_rounded
             ),
             onPressed: (){
               RoomRes? view = _playGameBloc.res;
@@ -121,14 +134,19 @@ class _PlayTTTGamePage extends State<PlayTTTGamePage> {
   }
 
   Widget _createPositionItem(PositionView view){
-    return AppListTitle(
-      title: '${view.getX()}-${view.getY()}',
-      subtitle: '${view.getType()}',
-      onPressed: (){
-        _playGameBloc.add(PlayGameEventPosChoose(view));
-      },
-      icon: Icon(
-          getIcon(view.res.type)
+    return Container(
+      child: InkWell(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppTextField('${view.getX()}-${view.getY()}'),
+            AppTextField('${view.getType()}'),
+            Icon(getIcon(view.res.type))
+          ],
+        ),
+        onTap: (){
+          _playGameBloc.add(PlayGameEventPosChoose(view));
+        },
       ),
     );
   }

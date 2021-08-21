@@ -36,8 +36,8 @@ public class UserJoinZoneHandler extends BaseServerEventHandler {
 			);
 		
 		JSONArray dataUsers = getUserList(zon);
-		this.getApi().sendToUser(
-				user, 
+		this.getApi().sendToListUser(
+				zon.getAllSessions(), 
 				CMD.USER_LIST.getCmd(), 
 				MessUtils.makeJsonData(dataUsers)
 			);
